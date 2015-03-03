@@ -1,4 +1,4 @@
-import bigdata.TakeDataFromHeadInRows
+import bigdata.TakeDataInRowsByBatch
 import org.scalatest.FunSuite
 import scala.collection.mutable.Stack
 
@@ -8,7 +8,7 @@ import scala.collection.mutable.Stack
 class Tester extends FunSuite{
 
   test("spark job returns data") {
-    assert(TakeDataFromHeadInRows.sparkJob()===null)
+    assert(TakeDataInRowsByBatch.sparkJob()===null)
   }
 
 
