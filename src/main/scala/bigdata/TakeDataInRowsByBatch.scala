@@ -24,7 +24,6 @@ object TakeDataInRowsByBatch {
     //Take data in rows
     val batchInputData=takeDataInRowByBatch(inputData,5)
 
-
   }
 
   def loadCSV(csvFile:String): RDD[String]  = {
@@ -43,6 +42,7 @@ object TakeDataInRowsByBatch {
     }).take(lineNum).foreach(println)
 
   }
+
 
 
   def main(args: Array[String]) = sparkJob()
