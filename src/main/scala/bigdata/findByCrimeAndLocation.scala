@@ -14,47 +14,27 @@ object findByCrimeAndLocation {
 
   val sc = new SparkContext(conf)
 
-  def sparkJob(crime:String, location:String) = {
+  def sparkJob(crime:String) = {
 
     //load CSV
-    val inputData=loadCSV("CrimesData.csv");
+    val inputData=sc.textFile("CrimesData.csv");
 
-    //Take data in rows
-    val batchInputData=takeDataInRowByBatch(inputData,5).persist()
+    // split / clean data
+    val headerAndRows = inputData.map(line => line.split(",").map(_.trim))
+    // get header
+    val header = headerAndRows.first
+    // filter out header (eh. just check if the first val matches the first header name)
+    val data = headerAndRows.filter(_(0) != header(0))
+    // splits to map (header/value pairs)
+    val dataRDD= data.map(splits => header.zip(splits).toMap)
 
-    //Remove header column
-    val batchInputDataWithoutHeader = dropHeader(batchInputData).persist()
+    val result = dataRDD.map(x=>(x("ID"),x("Date"), x("Description"), x("Location Description")))
 
-    batchInputDataWithoutHeader.filter(line => line.contains(crime)).foreach(println)
+    val crimeResult = result.filter(x=>(x.toString().contains(crime))).take(5).foreach(println)
+
 
   }
 
-  def loadCSV(csvFile:String): RDD[String]  = {
 
-    sc.textFile(csvFile)
-
-  }
-
-  def takeDataInRowByBatch(data:RDD[String], lineNum:Int):RDD[String]= {
-
-    data.mapPartitions(lines => {
-      val parser = new CSVParser(',')
-      lines.map(line => {
-        parser.parseLine(line).mkString(",")
-      }).take(lineNum)
-    })
-  }
-
-
-  def dropHeader(data: RDD[String]): RDD[String] = {
-
-    data.mapPartitionsWithIndex((idx, lines) => {
-      if (idx == 0) {
-        lines.drop(1)
-      }
-      lines
-    })
-  }
-
-  def main(args: Array[String]) = sparkJob("BATTERY", "S YATES")
+  def main(args: Array[String]) = sparkJob("FORCIBLE ENTRY")
 }

@@ -7,14 +7,16 @@ import org.apache.spark.{SparkContext, SparkConf}
 /**
  * Created by Kehinde on 15-03-03.
  */
-object TakeDataInColumnAndCountSorted {
+
+
+object TakeDataInRows{
 
   // Specify the path to your data file
   val conf = new SparkConf().setAppName("Spark BigData").setMaster("local")
 
   val sc = new SparkContext(conf)
 
-  def sparkJob(column:String) = {
+  def sparkJob() = {
 
     //load CSV
     val inputData=sc.textFile("CrimesData.csv");
@@ -28,12 +30,15 @@ object TakeDataInColumnAndCountSorted {
     // splits to map (header/value pairs)
     val dataRDD= data.map(splits => header.zip(splits).toMap)
 
-    val result = dataRDD.map(x=>(x(column))).take(5).foreach(println)
+    val result = dataRDD.map(x=>(x("ID"),x("Date"), x("Description"), x("Location Description")))
+
+    // print result
+    result.take(5).foreach(println)
 
 
   }
 
 
-  def main(args: Array[String]) = sparkJob("Description")
+  def main(args: Array[String]) = sparkJob()
 }
 
