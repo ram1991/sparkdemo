@@ -14,7 +14,7 @@ object AggregateByKeyValue {
 
   val sc = new SparkContext(conf)
 
-  def sparkJob(crime:String) = {
+  def sparkJob(crime:String)= {
 
     //load CSV
     val inputData=sc.textFile("CrimesData.csv");
@@ -26,9 +26,11 @@ object AggregateByKeyValue {
     // filter out header (eh. just check if the first val matches the first header name)
     val data = headerAndRows.filter(_(0) != header(0))
     // splits to map (header/value pairs)
-    val dataRDD= data.map(splits => header.zip(splits).toMap)
+    val dataRDD= data.map(splits => header.zip(splits).toMap).take(5)
 
-    val result = dataRDD.map(x=>(x("Description"))).countByValue()
+    val result = dataRDD.map(x=>(x("Description"),1)).map(x=>1).reduce((a,b)=>a+b)
+
+    println(result)
 
 
   }

@@ -14,7 +14,7 @@ object findByCrimeAndLocation {
 
   val sc = new SparkContext(conf)
 
-  def sparkJob(crime:String) = {
+  def sparkJob(crime:String, location:String) = {
 
     //load CSV
     val inputData=sc.textFile("CrimesData.csv");
@@ -36,5 +36,5 @@ object findByCrimeAndLocation {
   }
 
 
-  def main(args: Array[String]) = sparkJob("FORCIBLE ENTRY")
+  def main(args: Array[String]) = sparkJob("FORCIBLE ENTRY", "S YALES")
 }
