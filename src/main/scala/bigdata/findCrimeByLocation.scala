@@ -28,7 +28,7 @@ object findCrimeByLocation {
 
     val result = dataRDD.map(x => (x("ID"), x("Date"), x("Block"), x("Description"), x("Location Description")))
 
-    val crimeLocation = result.filter(x => (x.toString().contains(location))).take(5)
+    val crimeLocation = result.filter(x => (x.toString().contains(location))).take(20)
 
     val crimeInLocation = crimeLocation.filter(x => (x.toString().contains(crime))).foreach(println)
 

@@ -30,7 +30,7 @@ object TakeDataInRows{
     // splits to map (header/value pairs)
     val dataRDD= data.map(splits => header.zip(splits).toMap)
 
-    val result = dataRDD.map(x=>(x("ID"),x("Date"), x("Description"), x("Location Description")))
+    val result = dataRDD.map(x=>(x("ID"),x("Date"),x("Block"), x("Description"), x("Location Description")))
 
     // print result
     result.take(5).foreach(println)

@@ -16,3 +16,7 @@ libraryDependencies += "net.sf.opencsv" % "opencsv" % "2.3"
 
 libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.1.7" % "test"
 
+libraryDependencies += "joda-time" % "joda-time" % "2.7"
+
+libraryDependencies += "org.joda" % "joda-convert" % "1.2"
+
